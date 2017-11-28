@@ -42,7 +42,7 @@ dat1 = Estim_d(temp.x,temp.y,route,sens.loc,alpha = 2)
 
 #######################################################
 ##### 三点測位　#######
-# 1.route[i]と距離が近い三番目までの座標とroute[i]までの距離を取得
+# 1.routeと距離が近い三番目までの座標とrouteまでの距離を取得
 order_function <- function(dat1){
   dat.order <- matrix(0,nrow = n.data,ncol = n.sens)
   dat.orderRank = matrix(0,nrow = n.data,ncol = 3)
