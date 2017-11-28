@@ -1,4 +1,3 @@
-# Graduation-thesis
 # データ生成
 temp.x = seq(0,3,0.1)
 temp.y = 0.3*temp.x^2 - 1
