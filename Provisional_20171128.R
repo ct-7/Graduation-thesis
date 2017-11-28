@@ -17,6 +17,8 @@ sens.loc.Y1 = rep(seq(-1.5,1.5,0.5),7)
 #########################################################
 ###Estimation distance Function##########
 # routeの各点からsensorの距離を出す
+n.data = nrow(route)
+n.sens = nrow(sens.loc)
 Estim_d <- function(temp.x,temp.y,route,sens.loc,alpha){
   
   # initialization
@@ -41,8 +43,7 @@ dat1 = Estim_d(temp.x,temp.y,route,sens.loc,alpha = 2)
 
 
 #######################################################
-##### 三点測位　#######
-# 1.routeと距離が近い三番目までの座標とrouteまでの距離を取得
+# 1.route[i]と距離が近い三番目までの座標とroute[i]までの距離を取得
 order_function <- function(dat1){
   dat.order <- matrix(0,nrow = n.data,ncol = n.sens)
   dat.orderRank = matrix(0,nrow = n.data,ncol = 3)
@@ -55,9 +56,9 @@ order_function <- function(dat1){
 dat1.Rank = order_function(dat1)
 dat1.Rank = data.frame(dat1.Rank)
 
-
+################## ランク3が全て同じ直線上(同じgroup)にあるか探す関数作成中 #############
 # 2.order sensorのx軸の位置ごとでgroupに分ける
-Order = data.frame(matrix(1:n.sens,nrow = nrow(sens.loc),ncol= ncol(sens.loc)))
+Order = data.frame(matrix(1:n.sens,nrow = 7,ncol= 7))
 colnames(Order) = c("g1","g2","g3","g4","g5","g6","g7")
 
 # 3.出したランク3が全て同じ直線上(同じgroup)にあるか探す
@@ -105,9 +106,13 @@ find_true = function(logic){
     }
   }
 }
-find_true(logic)
+logic_where = find_true(logic)
+dat1.Rank[logic_where[1],]
 
+# とりあえずdat1.Rank[1,3]をdat1[1,9]に置き換える
+dat1.Rank[logic_where[1],3] = 9
 
+###############################################################
 # dat1.Rankで選ばれたセンサーの座標を返す
 # 3次元目の1にに1番距離が近いもの3次元目の2に二番目に距離が近い座標が入っている
 point = matrix(0,nrow = n.data,ncol = 2)
@@ -140,8 +145,9 @@ sens.zahyou_D2 = cbind(sens.zahyou[,,2],D[,2])
 sens.zahyou_D3 = cbind(sens.zahyou[,,3],D[,3])
 sens.zahyouD = cbind(sens.zahyou_D1,sens.zahyou_D2,sens.zahyou_D3)
 colnames(sens.zahyouD) = c("X1","Y1","D1","X2","Y2","D2","X3","Y3","D3")
+sens.zahyouD
 
-
+#### 三点測位　#######
 # 円の方程式を利用した三点測位法?
 x = 0;y = 0
 (x - sens.zahyouD$X1[i])^2 + (y - sens.zahyouD$Y1[i])^2 = sens.zahyouD$D1[i]^2 
