@@ -1,3 +1,6 @@
+install.packages("RColorBrewer", dependencies=T)
+library(RColorBrewer)
+
 pos  = c(3,3)
 s1 = c(2,2)
 s2 = c(0,3)
